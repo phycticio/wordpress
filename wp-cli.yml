@@ -1,0 +1,4 @@
+path: /var/www/html
+
+@local:
+  ssh: docker:www-data@ei_wp
