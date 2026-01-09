@@ -3,3 +3,4 @@
 app
 composer.lock
 auth.json
+vendor
