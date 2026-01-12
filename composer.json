@@ -1,19 +1,71 @@
 {
-    "name": "phycticio/wordpress",
+    "name": "tamarind/ecig",
     "type": "project",
     "authors": [
         {
-            "name": "WordPress Docker + Composer"
+            "name": "Tamarind Intelligence"
         }
     ],
     "repositories": {
+        "satispress": {
+            "type": "composer",
+            "url": "https://plugins.tamarindintelligence.com/satispress/"
+        },
         "wpackagist": {
             "type": "composer",
             "url": "https://wpackagist.org",
             "only": ["wpackagist-plugin/*", "wpackagist-theme/*"]
         }
     },
-    "require": {},
+    "require": {
+        "tamarind/ajax-search-pro": "^4.26.2",
+        "tamarind/gravityforms": "^2.8",
+        "tamarind/gravityformscli": "^1.5",
+        "tamarind/gravityformsgoogleanalytics": "^2.3",
+        "tamarind/gravityformszohocrm": "^2.2",
+        "tamarind/gravityformsrecaptcha": "^2.0.0",
+        "tamarind/gravityformsuserregistration": "^5.3",
+        "tamarind/omitsis-cookie-yes": "^1.2",
+        "tamarind/integromat-connector": "^1.5",
+        "tamarind/admin-columns-pro": "^6.4",
+        "tamarind/advanced-custom-fields-pro": "^6.2",
+        "wpackagist-plugin/wordpress-seo": "^26.1",
+        "wpackagist-plugin/advanced-custom-fields-font-awesome": "^5.0",
+        "wpackagist-plugin/akismet": "^5.3",
+        "wpackagist-plugin/comment-moderation-e-mail-to-post-author": "^0.6.0",
+        "wpackagist-plugin/disable-feeds": "^1.4",
+        "wpackagist-plugin/duplicate-post": "^4.5",
+        "wpackagist-plugin/ewww-image-optimizer": "^8.0.0",
+        "wpackagist-plugin/heartbeat-control": "^2.0",
+        "wpackagist-plugin/import-users-from-csv-with-meta": "^1.25",
+        "wpackagist-plugin/open-external-links-in-a-new-window": "^1.44",
+        "wpackagist-plugin/pdf-embedder": "^4.6",
+        "wpackagist-plugin/query-monitor": "^3.15",
+        "wpackagist-plugin/scheduled-post-trigger": "^3.2",
+        "wpackagist-plugin/tabby-responsive-tabs": "^1.4",
+        "wpackagist-plugin/user-role-editor": "^4.64",
+        "wpackagist-plugin/w3-total-cache": "^2.6",
+        "wpackagist-plugin/wonderplugin-pdf-embed": "^2.7",
+        "wpackagist-plugin/woocommerce": "^10.0.4",
+        "wpackagist-plugin/woocommerce-gateway-stripe": "^10.0.1",
+        "wpackagist-plugin/woocommerce-vat-checkout-add": "^1.0",
+        "wpackagist-plugin/woo-discount-rules": "^2.6",
+        "wpackagist-plugin/wordfence": "^8.0.0",
+        "wpackagist-plugin/wordpress-importer": "^0.9.0",
+        "wpackagist-plugin/worker": "^4.9",
+        "wpackagist-plugin/wp-console": "^2.4",
+        "wpackagist-plugin/wp-crontrol": "^1.16",
+        "wpackagist-plugin/wp-last-login": "^7.0",
+        "wpackagist-plugin/wp-mail-smtp": "^4.0.1",
+        "wpackagist-plugin/zoho-crm-forms": "^1.7.8.5",
+        "wpackagist-plugin/classic-editor": "^1.6",
+        "wpackagist-plugin/redirection": "^5.5",
+        "wpackagist-plugin/gravity-forms-zero-spam": "^1.4",
+        "wpackagist-plugin/smart-phone-field-for-gravity-forms": "^2.1",
+        "wpackagist-plugin/wp-2fa": "^3.0.0",
+        "wpackagist-plugin/wp-optimize": "^4.0.1",
+        "wpackagist-plugin/loggedin": "^2.0.2"
+    },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
         "laravel/pint": "^1.18"
