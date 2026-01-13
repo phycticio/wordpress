@@ -73,7 +73,5 @@ services:
       - default
 
 volumes:
-  wp_app:
-    name: app
   wp_data:
     name: data
