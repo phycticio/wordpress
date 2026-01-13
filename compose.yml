@@ -11,6 +11,8 @@ services:
     depends_on:
       - wordpress
     restart: unless-stopped
+    networks:
+      default:
 
   wordpress:
     container_name: ei_wp
@@ -21,7 +23,7 @@ services:
     environment:
       WORDPRESS_DB_HOST: wp_db
       WORDPRESS_DB_NAME: $DB_NAME
-      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_USER: $DB_USER
       WORDPRESS_DB_PASSWORD: $DB_PASSWORD
       WORDPRESS_DEBUG: ${WORDPRESS_DEBUG:-0}
       WORDPRESS_CONFIG_EXTRA: |
@@ -31,23 +33,32 @@ services:
       wp_db:
         condition: service_healthy
     restart: unless-stopped
+    networks:
+      - default
 
   wp_db:
     container_name: ei_db
-    image: mysql:8.4
+    image: mariadb:11.4.7
     restart: unless-stopped
+    ports:
+      - 3306:3306
     volumes:
       - wp_data:/var/lib/mysql
       - ./config/my.cnf:/etc/mysql/conf.d/custom.cnf
     environment:
-      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
-      MYSQL_DATABASE: $DB_NAME
+      MARIADB_ROOT_PASSWORD: $DB_ROOT_PASSWORD
+      MARIADB_DATABASE: $DB_NAME
+      MARIADB_USER: $DB_USER
+      MARIADB_PASSWORD: $DB_PASSWORD
     healthcheck:
-      test: ["CMD-SHELL", "exit | mysql -h localhost -P 3306 -u root -p$$MYSQL_ROOT_PASSWORD"]
-      interval: 10s
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      start_period: 1m
+      start_interval: 10s
+      interval: 1m
       timeout: 5s
-      retries: 5
-      start_period: 30s
+      retries: 3
+    networks:
+      - default
 
   redis:
     container_name: ei_redis
@@ -58,6 +69,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - default
 
 volumes:
   wp_app:
