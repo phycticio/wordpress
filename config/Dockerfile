@@ -15,3 +15,7 @@ RUN apk add --no-cache \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && apk del autoconf g++ make
+
+COPY ./php/*.ini /usr/local/etc/php/conf.d/
+
+RUN apk add --no-cache mariadb-client msmtp

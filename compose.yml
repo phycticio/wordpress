@@ -1,34 +1,51 @@
 services:
   nginx:
-    container_name: ei_server
+    container_name: me_server
     image: nginx:alpine
     ports:
-      - "8000:80"
-      - "4433:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./app:/var/www/html
-      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./config/nginx:/etc/nginx/conf.d:ro
+      - ./config/ssl/local-cert.pem:/etc/nginx/ssl/cert.pem:ro
+      - ./config/ssl/local-key.pem:/etc/nginx/ssl/key.pem:ro
     depends_on:
       - wordpress
     restart: unless-stopped
     networks:
-      default:
+      - default
+      - npm_default
 
   wordpress:
-    container_name: ei_wp
+    container_name: me_app
     build: ./config
     volumes:
       - ./app:/var/www/html
-      - ./config/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./config/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./config/php/sendmail.ini:/usr/local/etc/php/conf.d/sendmail.ini
     environment:
       WORDPRESS_DB_HOST: wp_db
       WORDPRESS_DB_NAME: $DB_NAME
       WORDPRESS_DB_USER: $DB_USER
       WORDPRESS_DB_PASSWORD: $DB_PASSWORD
+      WORDPRESS_TABLE_PREFIX: $WORDPRESS_TABLE_PREFIX
       WORDPRESS_DEBUG: ${WORDPRESS_DEBUG:-0}
       WORDPRESS_CONFIG_EXTRA: |
-        define('WP_MEMORY_LIMIT', '256M');
+        define('FORCE_SSL_ADMIN', true);
+        define('WP_MEMORY_LIMIT', '2048M');
         define('DISALLOW_FILE_EDIT', true);
+        define('WP_ENV', 'local');
+        define( 'WPMS_ON', true );
+        define( 'WPMS_MAILER', 'smtp' );
+        define( 'WPMS_SMTP_HOST', 'mailpit' );
+        define( 'WPMS_SMTP_PORT', 1025 );
+        define( 'WPMS_SMTP_AUTH', false );
+        define( 'WPMS_SMTP_AUTOTLS', false );
+        define( 'WPMS_SSL', '' );
+      PHP_INI_SCAN_DIR: ":/usr/local/etc/php/conf.d"
+    command: >
+      sh -c "echo 'sendmail_path = \"/usr/bin/msmtp -t --host=mailpit --port=1025\"' > /usr/local/etc/php/conf.d/zzz-mail.ini && docker-php-entrypoint php-fpm"
     depends_on:
       wp_db:
         condition: service_healthy
@@ -37,7 +54,7 @@ services:
       - default
 
   wp_db:
-    container_name: ei_db
+    container_name: me_db
     image: mariadb:11.4.7
     restart: unless-stopped
     ports:
@@ -61,7 +78,7 @@ services:
       - default
 
   redis:
-    container_name: ei_redis
+    container_name: me_redis
     image: redis:alpine
     restart: unless-stopped
     healthcheck:
@@ -72,6 +89,28 @@ services:
     networks:
       - default
 
+  mailpit:
+    image: axllent/mailpit
+    container_name: me_mail
+    restart: unless-stopped
+    volumes:
+      - mail_data:/data
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - default
+      - npm_default
+
 volumes:
   wp_data:
     name: data
+  mail_data:
+    name: mail_data
+
+networks:
+  default:
+    driver: bridge
+  npm_default:
+    external: true
