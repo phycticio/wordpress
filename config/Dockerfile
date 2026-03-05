@@ -1,4 +1,6 @@
-FROM wordpress:6.9-fpm-alpine
+ARG WORDPRESS_IMAGE_VERSION=latest-fpm-alpine
+
+FROM wordpress:${WORDPRESS_IMAGE_VERSION}
 
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar \

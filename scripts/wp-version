@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Configuration
+APP_DIR="./app"
+TEMP_DIR="./wp_tmp"
+BACKUP_DIR="./wp_core_backup_$(date +%Y%m%d_%H%M%S)"
+
+show_help() {
+    echo "Usage: ./wp-version [VERSION]"
+    echo "Example: ./wp-version.sh 6.2.2"
+    echo "This will download WordPress [VERSION] and update the $APP_DIR folder while keeping wp-content."
+}
+
+if [ -z "$1" ]; then
+    show_help
+    exit 1
+fi
+
+VERSION=$1
+URL="https://wordpress.org/wordpress-$VERSION.tar.gz"
+
+# 1. Verification
+echo "--- Checking target directory ---"
+if [ ! -d "$APP_DIR" ]; then
+    echo "Error: Directory $APP_DIR not found. Run this from your project root."
+    exit 1
+fi
+
+# 2. Download
+echo "--- Downloading WordPress $VERSION ---"
+mkdir -p "$TEMP_DIR"
+curl -L "$URL" | tar -xz -C "$TEMP_DIR"
+
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to download or extract WordPress $VERSION. Check the version number."
+    rm -rf "$TEMP_DIR"
+    exit 1
+fi
+
+# 3. Core Protection (Safety Backup)
+echo "--- Backing up current core files to $BACKUP_DIR ---"
+mkdir -p "$BACKUP_DIR"
+cp -r "$APP_DIR/wp-admin" "$APP_DIR/wp-includes" "$BACKUP_DIR/"
+cp "$APP_DIR"/*.php "$BACKUP_DIR/"
+
+# 4. Replacement
+echo "--- Replacing core files (excluding wp-content) ---"
+
+# Delete old core folders
+rm -rf "$APP_DIR/wp-admin"
+rm -rf "$APP_DIR/wp-includes"
+
+# Move new core folders
+mv "$TEMP_DIR/wordpress/wp-admin" "$APP_DIR/"
+mv "$TEMP_DIR/wordpress/wp-includes" "$APP_DIR/"
+
+# Copy root files (this overwrites core files but keeps wp-config.php because it doesn't exist in the download)
+cp "$TEMP_DIR/wordpress/"*.php "$APP_DIR/"
+
+# 5. Cleanup
+echo "--- Cleaning up ---"
+rm -rf "$TEMP_DIR"
+
+echo "Successfully switched to WordPress $VERSION"
+echo "Note: Visit your site's /wp-admin/upgrade.php to update the database if prompted."

@@ -5,3 +5,5 @@ app
 
 config/ssl/*
 db.backup.sql
+
+**backup**

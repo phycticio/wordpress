@@ -22,7 +22,11 @@ services:
 
   wordpress:
     container_name: ${CONTAINER_PREFIX:-wp_}app
-    build: ./config
+    build:
+      context: ./config
+      dockerfile: Dockerfile
+      args:
+        - WORDPRESS_IMAGE_VERSION=${WORDPRESS_IMAGE_VERSION:-latest-fpm-alpine}
     volumes:
       - ./app:/var/www/html
       - ./config/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
@@ -61,7 +65,7 @@ services:
     image: mariadb:11.4.7
     restart: unless-stopped
     ports:
-      - 3306:3306
+      - 3306-3399:3306
     volumes:
       - wp_data:/var/lib/mysql
       - ./config/my.cnf:/etc/mysql/conf.d/custom.cnf
@@ -107,9 +111,9 @@ services:
 
 volumes:
   wp_data:
-    name: data
+    name: ${CONTAINER_PREFIX:-wp_}data
   mail_data:
-    name: mail_data
+    name: ${CONTAINER_PREFIX:-wp_}mail_data
 
 networks:
   default:
