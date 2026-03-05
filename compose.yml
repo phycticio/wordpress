@@ -1,23 +1,27 @@
 services:
   nginx:
-    container_name: me_server
+    container_name: ${CONTAINER_PREFIX:-wp_}server
     image: nginx:alpine
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./app:/var/www/html
-      - ./config/nginx:/etc/nginx/conf.d:ro
+      - ./config/nginx/app.conf.template:/etc/nginx/templates/app.conf.template:ro
+      - ./config/nginx/mailpit.conf.template:/etc/nginx/templates/mailpit.conf.template:ro
       - ./config/ssl/local-cert.pem:/etc/nginx/ssl/cert.pem:ro
       - ./config/ssl/local-key.pem:/etc/nginx/ssl/key.pem:ro
     depends_on:
       - wordpress
     restart: unless-stopped
+    environment:
+      PROXY_NAME: ${PROXY_NAME:-localhost}
+      HOST_NAME: ${HOST_NAME:-localhost}
     networks:
       - default
 
   wordpress:
-    container_name: me_app
+    container_name: ${CONTAINER_PREFIX:-wp_}app
     build: ./config
     volumes:
       - ./app:/var/www/html
@@ -53,7 +57,7 @@ services:
       - default
 
   wp_db:
-    container_name: me_db
+    container_name: ${CONTAINER_PREFIX:-wp_}db
     image: mariadb:11.4.7
     restart: unless-stopped
     ports:
@@ -77,7 +81,7 @@ services:
       - default
 
   redis:
-    container_name: me_redis
+    container_name: ${CONTAINER_PREFIX:-wp_}redis
     image: redis:alpine
     restart: unless-stopped
     healthcheck:
@@ -90,7 +94,7 @@ services:
 
   mailpit:
     image: axllent/mailpit
-    container_name: me_mail
+    container_name: ${CONTAINER_PREFIX:-wp_}mail
     restart: unless-stopped
     volumes:
       - mail_data:/data
@@ -110,3 +114,4 @@ volumes:
 networks:
   default:
     driver: bridge
+    name: ${CONTAINER_PREFIX:-wp_}network

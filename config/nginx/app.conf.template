@@ -1,12 +1,12 @@
 server {
     listen 80;
-    server_name ${HOSTNAME};
+    server_name ${HOST_NAME};
     return 301 https://$host$request_uri;
 }
 
 server {
     listen 443 ssl;
-    server_name ${HOSTNAME};
+    server_name ${HOST_NAME};
 
     ssl_certificate /etc/nginx/ssl/cert.pem;
     ssl_certificate_key /etc/nginx/ssl/key.pem;
@@ -25,13 +25,13 @@ server {
         }
 
         location @production_proxy {
-            set $prod_url https://${PROXYNAME};
+            set $prod_url https://${PROXY_NAME};
             proxy_pass $prod_url$request_uri;
-            proxy_set_header Host ${PROXYNAME};
+            proxy_set_header Host ${PROXY_NAME};
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_ssl_server_name on;
-            proxy_ssl_name ${PROXYNAME};
+            proxy_ssl_name ${PROXY_NAME};
             proxy_ssl_protocols TLSv1.2 TLSv1.3;
             proxy_ssl_session_reuse on;
             proxy_intercept_errors on;
