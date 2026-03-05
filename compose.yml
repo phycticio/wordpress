@@ -2,20 +2,21 @@ services:
   nginx:
     container_name: me_server
     image: nginx:alpine
-    ports:
-      - "80:80"
-      - "443:443"
     volumes:
       - ./app:/var/www/html
       - ./config/nginx:/etc/nginx/conf.d:ro
-      - ./config/ssl/local-cert.pem:/etc/nginx/ssl/cert.pem:ro
-      - ./config/ssl/local-key.pem:/etc/nginx/ssl/key.pem:ro
     depends_on:
       - wordpress
     restart: unless-stopped
     networks:
       - default
-      - npm_default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.marianaerato.rule=Host(`marianaerato.local`)"
+      - "traefik.http.routers.marianaerato.entrypoints=websecure"
+      - "traefik.http.routers.marianaerato.tls=true"
+      - "traefik.http.routers.marianaerato.tls.certresolver=le"
+      - "traefik.http.services.marianaerato.loadbalancer.server.port=80"
 
   wordpress:
     container_name: me_app
@@ -101,7 +102,6 @@ services:
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
     networks:
       - default
-      - npm_default
 
 volumes:
   wp_data:
@@ -111,6 +111,5 @@ volumes:
 
 networks:
   default:
+    name: me_default
     driver: bridge
-  npm_default:
-    external: true
