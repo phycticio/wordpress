@@ -17,8 +17,10 @@ services:
     environment:
       PROXY_NAME: ${PROXY_NAME:-localhost}
       HOST_NAME: ${HOST_NAME:-localhost}
-    env_file:
-      - .env
+      ENVIRONMENT: ${ENVIRONMENT:-local}
+      ENVIRONMENT_DOMAIN: ${ENVIRONMENT:-test.local}
+      SSH_HOST_PRODUCTION: ${SSH_HOST_PRODUCTION:-test.com}
+      SSH_HOST_STAGE: ${SSH_HOST_STAGE:-stage.test.com}
     networks:
       - default
 
@@ -57,8 +59,10 @@ services:
         define( 'WPMS_SMTP_AUTOTLS', false );
         define( 'WPMS_SSL', '' );
       PHP_INI_SCAN_DIR: ":/usr/local/etc/php/conf.d"
-    env_file:
-      - .env
+      ENVIRONMENT: ${ENVIRONMENT:-local}
+      ENVIRONMENT_DOMAIN: ${ENVIRONMENT:-test.local}
+      SSH_HOST_PRODUCTION: ${SSH_HOST_PRODUCTION:-test.com}
+      SSH_HOST_STAGE: ${SSH_HOST_STAGE:-stage.test.com}
     depends_on:
       wp_db:
         condition: service_healthy
