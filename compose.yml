@@ -22,6 +22,8 @@ services:
 
   wordpress:
     container_name: ${CONTAINER_PREFIX:-wp_}app
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    image: ${CONTAINER_PREFIX:-wp_}wordpress:${WORDPRESS_IMAGE_VERSION:-latest-fpm-alpine}
     build:
       context: ./config
       dockerfile: Dockerfile
