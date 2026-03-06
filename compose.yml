@@ -33,6 +33,7 @@ services:
       - ./app:/var/www/html
       - ./config/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       - ./config/php/sendmail.ini:/usr/local/etc/php/conf.d/sendmail.ini
+      - ./config/php/zzz-mail.ini:/usr/local/etc/php/conf.d/zzz-mail.ini:ro
     environment:
       WORDPRESS_DB_HOST: wp_db
       WORDPRESS_DB_NAME: $DB_NAME
@@ -53,8 +54,6 @@ services:
         define( 'WPMS_SMTP_AUTOTLS', false );
         define( 'WPMS_SSL', '' );
       PHP_INI_SCAN_DIR: ":/usr/local/etc/php/conf.d"
-    command: >
-      sh -c "echo 'sendmail_path = \"/usr/bin/msmtp -t --host=mailpit --port=1025\"' > /usr/local/etc/php/conf.d/zzz-mail.ini && docker-php-entrypoint php-fpm"
     depends_on:
       wp_db:
         condition: service_healthy
