@@ -110,19 +110,6 @@ services:
     networks:
       - default
 
-  mailpit:
-    image: axllent/mailpit
-    container_name: ${CONTAINER_PREFIX:-wp_}mail
-    restart: unless-stopped
-    volumes:
-      - mail_data:/data
-    environment:
-      MP_MAX_MESSAGES: 5000
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
-    networks:
-      - default
-
 volumes:
   wp_data:
     name: ${CONTAINER_PREFIX:-wp_}data
