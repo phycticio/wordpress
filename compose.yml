@@ -5,7 +5,6 @@ services:
     volumes:
       - ./app:/var/www/html
       - ./config/nginx/app.conf.template:/etc/nginx/templates/app.conf.template:ro
-      - ./config/nginx/mailpit.conf.template:/etc/nginx/templates/mailpit.conf.template:ro
     depends_on:
       - wordpress
     restart: unless-stopped
