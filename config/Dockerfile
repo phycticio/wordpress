@@ -21,3 +21,5 @@ RUN apk add --no-cache \
 COPY ./php/*.ini /usr/local/etc/php/conf.d/
 
 RUN apk add --no-cache mariadb-client msmtp
+
+RUN chown -R 0:0 /var/www/html && chmod -R 775 /var/www/html
