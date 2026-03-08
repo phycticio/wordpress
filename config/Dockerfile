@@ -6,10 +6,6 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp
 
-RUN apk add --no-cache shadow && \
-    usermod -u ${USER_ID:-0} www-data && \
-    groupmod -g ${USER_ID:-0} www-data
-
 RUN apk add --no-cache \
     libzip-dev \
     libpng-dev \
