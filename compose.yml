@@ -47,6 +47,8 @@ services:
         define( 'DISALLOW_FILE_EDIT', ${WORDPRESS_DISALLOW_FILE_EDIT:-true} );
         define( 'WP_ENV', '${WORDPRESS_ENVIRONMENT:-local}' );
         define( 'WPMS_ON', ${WORDPRESS_SMTP_ON:-true} );
+        define( 'WPMS_SENDINBLUE_DOMAIN', '${WORDPRESS_SMTP_SENDINBLUE_DOMAIN:-''}' );
+        define( 'WPMS_SENDINBLUE_API_KEY', '${WORDPRESS_SMTP_SENDINBLUE_API_KEY:-''}' );
         define( 'WPMS_MAILER', '${WORDPRESS_SMTP_MAILER:-smtp}' );
         define( 'WPMS_SMTP_HOST', '${WORDPRESS_SMTP_HOST:-mailpit}' );
         define( 'WPMS_SMTP_PORT', '${WORDPRESS_SMTP_PORT:-1025}' );
