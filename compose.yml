@@ -4,7 +4,7 @@ services:
     image: nginx:alpine
     user: "0:0"
     volumes:
-      - ./app:/var/www/html
+      - ../files:/var/www/html
       - ./config/nginx/app.conf.template:/etc/nginx/templates/app.conf.template:ro
     depends_on:
       - wordpress
@@ -32,7 +32,7 @@ services:
         - USER_ID=${USER_ID:-0}
         - GROUP_ID=${GROUP_ID:-0}
     volumes:
-      - ./app:/var/www/html
+      - ../files:/var/www/html
       - ./config/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       - ./config/php/sendmail.ini:/usr/local/etc/php/conf.d/sendmail.ini
       - ./config/php/zzz-mail.ini:/usr/local/etc/php/conf.d/zzz-mail.ini:ro
