@@ -2,6 +2,7 @@ services:
   nginx:
     container_name: ${CONTAINER_PREFIX:-wp_}server
     image: nginx:alpine
+    user: "0:0"
     volumes:
       - ./app:/var/www/html
       - ./config/nginx/app.conf.template:/etc/nginx/templates/app.conf.template:ro
@@ -21,6 +22,7 @@ services:
 
   wordpress:
     container_name: ${CONTAINER_PREFIX:-wp_}app
+    user: "0:0"
     image: ${CONTAINER_PREFIX:-wp_}wordpress:${WORDPRESS_IMAGE_VERSION:-latest-fpm-alpine}
     build:
       context: ./config
