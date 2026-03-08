@@ -27,6 +27,8 @@ services:
       dockerfile: Dockerfile
       args:
         - WORDPRESS_IMAGE_VERSION=${WORDPRESS_IMAGE_VERSION:-latest-fpm-alpine}
+        - USER_ID=${USER_ID:-0}
+        - GROUP_ID=${GROUP_ID:-0}
     volumes:
       - ./app:/var/www/html
       - ./config/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
