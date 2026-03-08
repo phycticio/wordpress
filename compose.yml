@@ -82,8 +82,6 @@ services:
     container_name: ${CONTAINER_PREFIX:-wp_}db
     image: mariadb:11.4.7
     restart: unless-stopped
-    ports:
-      - 3306-3399:3306
     volumes:
       - wp_data:/var/lib/mysql
       - ./config/my.cnf:/etc/mysql/conf.d/custom.cnf
