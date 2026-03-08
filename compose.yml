@@ -46,18 +46,18 @@ services:
       WORDPRESS_CONFIG_EXTRA: |
         define( 'FORCE_SSL_ADMIN', ${WORDPRESS_FORCE_SSL_ADMIN:-true} );
         define( 'WP_MEMORY_LIMIT', '${WORDPRESS_MEMORY_LIMIT:-256M}' );
-        define( 'DISALLOW_FILE_EDIT', '${WORDPRESS_DISALLOW_FILE_EDIT:-false}' );
+        define( 'DISALLOW_FILE_EDIT', ${WORDPRESS_DISALLOW_FILE_EDIT:-'false'} );
         define( 'WP_ENV', '${WORDPRESS_ENVIRONMENT:-local}' );
-        define( 'AUTOMATIC_UPDATER_DISABLED', '${WORDPRESS_AUTOMATIC_UPDATER_DISABLED:-false}' );
-        define( 'WP_AUTO_UPDATE_CORE', '${WORDPRESS_AUTO_UPDATE_CORE:-true}' );
-        define( 'DISALLOW_FILE_MODS', '${WORDPRESS_DISALLOW_FILE_MODS:-false}' );
+        define( 'AUTOMATIC_UPDATER_DISABLED', ${WORDPRESS_AUTOMATIC_UPDATER_DISABLED:-'false'} );
+        define( 'WP_AUTO_UPDATE_CORE', ${WORDPRESS_AUTO_UPDATE_CORE:-'true'} );
+        define( 'DISALLOW_FILE_MODS', ${WORDPRESS_DISALLOW_FILE_MODS:-'false'} );
         define( 'WP_POST_REVISIONS', '${WORDPRESS_POST_REVISIONS:-5}' );
-        define( 'CONCATENATE_SCRIPTS', '${WORDPRESS_CONCATENATE_SCRIPTS:-true}' );
+        define( 'CONCATENATE_SCRIPTS', ${WORDPRESS_CONCATENATE_SCRIPTS:-'true'} );
         define( 'EMPTY_TRASH_DAYS', '${WORDPRESS_EMPTY_TRASH_DAYS:-7}' );
         define( 'COMPRESS_CSS', '${WORDPRESS_COMPRESS_CSS:-true}' );
-        define( 'COMPRESS_SCRIPTS', '${WORDPRESS_COMPRESS_SCRIPTS:-true}' );
-        define( 'ENFORCE_GZIP', '${WORDPRESS_ENFORCE_GZIP:-true}' );
-        define( 'DISABLE_WP_CRON', '${WORDPRESS_DISABLE_WP_CRON:-false}' );
+        define( 'COMPRESS_SCRIPTS', ${WORDPRESS_COMPRESS_SCRIPTS:-'true'} );
+        define( 'ENFORCE_GZIP', ${WORDPRESS_ENFORCE_GZIP:-'true'} );
+        define( 'DISABLE_WP_CRON', ${WORDPRESS_DISABLE_WP_CRON:-'false'} );
       ENVIRONMENT: ${ENVIRONMENT:-local}
       ENVIRONMENT_DOMAIN: ${ENVIRONMENT:-test.local}
       SSH_HOST_PRODUCTION: ${SSH_HOST_PRODUCTION:-test.com}
