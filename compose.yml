@@ -46,7 +46,7 @@ services:
       WORDPRESS_CONFIG_EXTRA: |
         define( 'FORCE_SSL_ADMIN', ${WORDPRESS_FORCE_SSL_ADMIN:-true} );
         define( 'WP_MEMORY_LIMIT', '${WORDPRESS_MEMORY_LIMIT:-256M}' );
-        define( 'DISALLOW_FILE_EDIT', ${WORDPRESS_DISALLOW_FILE_EDIT:-false} );
+        define( 'DISALLOW_FILE_EDIT', '${WORDPRESS_DISALLOW_FILE_EDIT:-false}' );
         define( 'WP_ENV', '${WORDPRESS_ENVIRONMENT:-local}' );
         define( 'AUTOMATIC_UPDATER_DISABLED', '${WORDPRESS_AUTOMATIC_UPDATER_DISABLED:-false}' );
         define( 'WP_AUTO_UPDATE_CORE', '${WORDPRESS_AUTO_UPDATE_CORE:-true}' );
